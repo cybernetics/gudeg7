@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/gudeg7ui.xhtml">
+    <ui:define name="content">
+        <h:panelGroup layout="block" styleClass="alert alert-success" rendered="#{registerBean.status!=null}">
+            <h4>Register Process</h4>
+            Server Status: #{registerBean.status}!<br/>
+        </h:panelGroup>
+        <h:panelGroup layout="block" styleClass="alert alert-error" rendered="#{registerBean.status==null}">
+            <h4>Register Process</h4>
+            Server Status: NOT OK!<br/>
+        </h:panelGroup>
+        <h:form prependId="false">
+            <h4>Login info:</h4>
+            <h:inputText id="email" value="#{registerBean.email}" required="true" >
+                <f:passThroughAttribute name="placeholder" value="Email"/>
+                <f:validateRegex pattern="^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$" />
+                
+            </h:inputText>
+            <h:messages for="email" />
+            <br/>
+            <h:inputSecret id="password" value="#{registerBean.password}" required="true" >
+                <f:passThroughAttribute name="placeholder" value="Password"/>
+            </h:inputSecret>
+            <h:messages for="password" />
+            <br/>
+            <h4>Bio info:</h4>
+            <h:inputText id="firstName" value="#{registerBean.firstName}" required="true">
+                <f:passThroughAttribute name="placeholder" value="First name"/>
+                <f:validateLength minimum="4" maximum="45"/>
+            </h:inputText>
+            <h:messages for="firstName" />
+            <br/>
+            <h:inputText id="lastName" value="#{registerBean.lastName}" required="true">
+                <f:validateLength minimum="4" maximum="45"/>
+                <f:passThroughAttribute name="placeholder" value="Last name"/>
+            </h:inputText>
+            <h:messages for="lastName" />
+            <br/>
+            <h4>Location info:</h4>
+            <h:inputText id="address" value="#{registerBean.address}" required="true">
+                <f:passThroughAttribute name="placeholder" value="Address"/>
+            </h:inputText>
+            <h:messages for="address"/>
+            <br/>
+            <h:inputText id="city" value="#{registerBean.city}" required="true">
+                <f:passThroughAttribute name="placeholder" value="City"/>
+            </h:inputText>
+            <h:messages for="city"/>
+            <br/>
+            <h:inputText id="province" value="#{registerBean.province}" required="true">
+                <f:passThroughAttribute name="placeholder" value="Province"/>
+            </h:inputText>
+            <h:messages for="province"/>
+            <br/><br/>
+            <h:commandButton type="submit" styleClass="btn btn-info" value="Next" action="registerFlowProc"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
