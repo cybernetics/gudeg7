@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <title>Gudeg7 Project</title>
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/bootstrap-responsive.min.css"/>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,900' rel='stylesheet' type='text/css' />
+        <style>
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+                font-family: "Roboto", sans-serif;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" value="#">Gudeg7</a>
+                    <h:panelGroup layout="block" styleClass="nav-collapse collapse">
+                        <ul class="nav">
+                            <ui:insert name="nav">
+                                <li class="active"><a href="/gudeg7-web/home.jsf">Home</a></li>
+                                <li><a href="/gudeg7-web/about.jsf">About</a></li>
+                            </ui:insert>
+                            <h:outputText escape="false" value="#{gudeg7Session.memberOptions}" 
+                                          rendered="#{gudeg7Session.activeMembers!=null}"/>
+                        </ul>
+                        <h:form styleClass="navbar-form pull-right" style="float: right" 
+                                rendered="#{gudeg7Session.activeMembers==null}">
+                            <h:inputText styleClass="span2" style="margin-bottom: 5px; margin-left: 5px;"
+                                         value="#{gudeg7Session.signinUsername}">
+                                <f:passThroughAttribute name="placeholder" 
+                                                        value="Username"/>
+                            </h:inputText>
+                            <h:inputSecret styleClass="span2" style="margin-bottom: 5px; margin-left: 5px;"
+                                           value="#{gudeg7Session.signinPassword}">
+                                <f:passThroughAttribute name="placeholder" 
+                                                        value="Password"/>
+                            </h:inputSecret>
+                            <h:commandButton styleClass="btn btn-primary" 
+                                             style="margin-bottom: 5px; margin-left: 5px;"
+                                             value="Sign in"
+                                             action="#{gudeg7Session.signin}"/>
+                            <h:commandButton value="Register" action="registerFlow"
+                                             style="margin-bottom: 5px; margin-left: 5px;"
+                                             styleClass="btn btn-warning" />
+                        </h:form>
+                        <h:form styleClass="navbar-form pull-right"
+                                rendered="#{gudeg7Session.activeMembers!=null}">
+                            <a href="#" class="navbar-text" style="color: white">
+                                Hi #{gudeg7Session.activeMembers.firstName}
+                            </a>
+                            <a id="notifpopover" href="#" 
+                               data-toggle="popover" data-placement="bottom" 
+                               data-original-title="Notifications" 
+                               data-content="#{notifications.unreadNotificationsText}"
+                               style="margin-left: 10px">
+                                <h:outputText escape="false" 
+                                              value="#{notifications.notifToolbar}"/>
+                            </a>
+                            <h:commandButton action="gohome" actionListener="#{gudeg7Session.signout}" 
+                                             style="margin-left: 5px; margin-bottom: 5px" 
+                                             styleClass="btn btn-danger" 
+                                             value="Sign out"/>
+                        </h:form>
+                    </h:panelGroup>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <ui:insert name="content">
+                Content
+            </ui:insert>
+            <hr/>
+            <footer>
+                <p>By Yosi Pramajaya, Leader of JUG JogLoSemar.</p>
+            </footer>
+        </div>
+        <h:outputScript name="js/jquery.min.js"/>
+        <h:outputScript name="js/bootstrap.min.js"/>
+        <script>
+            $("a[data-toggle=popover]").popover({
+                html : true
+            });
+        </script>
+    </h:body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/gudeg7ui.xhtml">
+    <ui:define name="content">
+        <div>
+            <h:dataTable value="#{notifications.notifications}" var="notify"
+                         styleClass="table table-hover table-condensed">
+                <f:facet name="caption">
+                    <h2>Your notifications</h2>
+                </f:facet>
+                <h:column >
+                    <f:facet name="header">
+                        Title
+                    </f:facet>
+                    <!-- For unread notifications, set font-weight to bold -->
+                    <h:outputText style="font-weight: bold" rendered="#{notify.unread}" value="#{notify.title}"/>
+                    <!-- For have-read notifications, set font-weight to normal -->
+                    <h:outputText rendered="#{not notify.unread}" value="#{notify.title}"/>
+                </h:column>
+                <h:column >
+                    <f:facet name="header">
+                        Description
+                    </f:facet>
+                    <!-- For unread notifications, set font-weight to bold -->
+                    <h:outputText style="font-weight: bold" rendered="#{notify.unread}" value="#{notify.shortDesc}"/>
+                    <!-- For have-read notifications, set font-weight to normal -->
+                    <h:outputText rendered="#{not notify.unread}" value="#{notify.shortDesc}"/>
+                </h:column>
+                <h:column >
+                    <f:facet name="header">
+                        Action
+                    </f:facet>
+                    <h:form>
+                        <h:commandButton styleClass="btn btn-danger" action="#{notifications.deleteSpecific}" value="Delete">
+                            <f:param name="id" value="#{notify.id}"/>
+                        </h:commandButton>
+                        <a onclick="$('##{notify.id}modal').modal('show');" class="btn btn-primary"> 
+                            Read
+                        </a>
+                    </h:form>
+
+                    <!-- Modal -->
+                    <div id="#{notify.id}modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <h3>#{notify.title}</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>#{notify.description}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <h:form>
+                                <h:commandLink actionListener="#{notifications.read}" value="Close" style="margin-left: 5px"
+                                               class="btn" onclick="$('##{notify.id}modal').modal('hide')">
+                                    <f:param name="id" value="#{notify.id}"/>
+                                </h:commandLink>
+                            </h:form>
+                        </div>
+                    </div>
+                </h:column>
+                <f:facet name="footer">
+                    <h:form>
+                        <h:panelGrid columns="2">
+                            <h:commandButton styleClass="btn btn-danger" action="#{notifications.deleteAllNotifications}" 
+                                             value="Delete all" rendered="#{notifications.unreadCount ge 0}"/>
+                            <h:commandButton styleClass="btn btn-primary" action="#{notifications.markAllAsRead}" 
+                                             value="Mark all as read" rendered="#{notifications.unreadCount ge 0}"/>
+                        </h:panelGrid>
+                    </h:form>
+                </f:facet>
+            </h:dataTable>
+        </div>
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/gudeg7ui.xhtml">
+    <ui:define name="nav">
+        <li class="active"><a href="/gudeg7-web/home.jsf">Home</a></li>
+        <li><a href="/gudeg7-web/about.jsf">About</a></li>
+    </ui:define>
+    <ui:define name="content">
+        <script>
+            var wsUri = "ws://localhost:8080/gudeg7-web/socket";
+            var wsSocket = new WebSocket(wsUri);
+
+            function sendMessage(msg) {
+                wsSocket.send(msg);
+                writeToScreen("#{messSocketBean.latestMessage}");
+            }
+
+            function writeToScreen(msg) {
+                $("#message_list").append("<li>" + msg + "</li>");
+            }
+        </script>
+        <h:panelGrid columns="2">
+            <h:outputText value="Message: "/>
+            <input type="text" id="msg" placeholder="Type to chat"/>
+        </h:panelGrid>
+
+        <a class="btn btn-info" onclick="sendMessage($('#msg').val())">Send Message</a>
+
+        <br/>
+        <hr/>
+        <h3>Messages:</h3>
+        <h:outputText id="newestText" value="#{messSocketBean.latestMessage}" />
+        <ul id="message_list">
+
+        </ul>
+    </ui:define>
+</ui:composition>
+
