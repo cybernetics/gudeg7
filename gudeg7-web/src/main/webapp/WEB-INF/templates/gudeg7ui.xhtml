@@ -60,9 +60,11 @@
                             <a href="#" class="navbar-text" style="color: white">
                                 Hi #{gudeg7Session.activeMembers.firstName}
                             </a>
-                            <a href="#" data-toggle="popover" data-placement="bottom" 
+                            <a href="#" 
+                               id="notifications_popover"
+                               data-toggle="popover" 
+                               data-placement="bottom" 
                                data-original-title="Notifications" 
-                               data-content="#{notifications.unreadNotificationsText}"
                                style="margin-left: 10px">
                                 <h:outputText escape="false" 
                                               value="#{notifications.notifToolbar}"/>
@@ -88,7 +90,10 @@
         <h:outputScript name="js/jquery.min.js"/>
         <h:outputScript name="js/bootstrap.min.js"/>
         <script>
-            $("a[data-toggle=popover]").popover();
+            $("#notifications_popover").popover({
+                html : true,
+                content : #{notifications.unreadNotificationsText}
+            });
         </script>
     </h:body>
 </html>

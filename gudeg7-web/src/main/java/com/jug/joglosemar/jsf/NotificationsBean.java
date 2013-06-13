@@ -53,6 +53,10 @@ public class NotificationsBean implements Serializable {
         } else {
             sb.append("Notification API has some error!");
         }
+        
+        sb.append("<br/>");
+        sb.append("<hr/>");
+        sb.append("<a href=\"/gudeg7-web/members/notifications.jsf\">Read all notifications</a>");
 
         this.unreadNotificationsText = sb.toString();
 
@@ -103,4 +107,5 @@ public class NotificationsBean implements Serializable {
         }
         return notifToolbar;
     }
+    
 }
