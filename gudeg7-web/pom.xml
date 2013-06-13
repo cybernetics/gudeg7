@@ -34,47 +34,8 @@
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>javax.transaction.cdi</groupId>
-            <artifactId>javax.transaction.cdi-api</artifactId>
-            <version>1.2-b03</version>
-        </dependency>
-        
-        <!-- REST API-->
-        <dependency> 
-            <groupId>org.glassfish.jersey.core</groupId> 
-            <artifactId>jersey-server</artifactId> 
-            <version>2.0</version> 
-            <scope>provided</scope> 
-        </dependency>
-        
-        <!-- JSF API -->
-        <dependency>
-            <groupId>javax.faces</groupId>
-            <artifactId>javax.faces-api</artifactId>
-            <version>2.2</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
     
-    <repositories>
-        <repository> 
-            <id>Java EE 7 Promoted</id> 
-            <url>https://maven.java.net/content/groups/promoted/</url>  
-        </repository>
-        <repository> 
-            <id>Java EE 7</id> 
-            <url>https://maven.java.net/content/groups/public/</url>  
-        </repository>
-    </repositories>
-
     <build>
         <plugins>
             <plugin>

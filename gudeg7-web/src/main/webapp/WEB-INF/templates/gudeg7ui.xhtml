@@ -32,7 +32,7 @@
                         <ul class="nav">
                             <ui:insert name="nav">
                                 <li class="active"><a href="/gudeg7-web/home.jsf">Home</a></li>
-                                <li class="active"><a href="/gudeg7-web/about.jsf">About</a></li>
+                                <li><a href="/gudeg7-web/about.jsf">About</a></li>
                             </ui:insert>
                         </ul>
                         <h:form styleClass="navbar-form pull-right" style="float: right" 
@@ -92,7 +92,7 @@
         <script>
             $("#notifications_popover").popover({
                 html : true,
-                content : #{notifications.unreadNotificationsText}
+                content : '#{notifications.unreadNotificationsText}'
             });
         </script>
     </h:body>

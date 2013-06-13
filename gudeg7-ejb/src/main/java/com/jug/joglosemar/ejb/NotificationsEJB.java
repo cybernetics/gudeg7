@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -34,15 +35,15 @@ public class NotificationsEJB {
         }
     }
     
-    public long count(Member m) {
+    public long countUnread(Member m) {
         try {
             long count = (long) em.createNamedQuery("Notification.countUnread")
                     .setParameter("notifyMember", m)
                     .getSingleResult();
             return count;
         } catch (Exception e) {
-            System.out.println("[ERROR] " + e.getMessage());
-            return 0;
+            System.err.println("[ERROR] " + e.getMessage());
+            return -1;
         }
     }
 
@@ -100,6 +101,18 @@ public class NotificationsEJB {
         } catch (Exception e) {
             System.err.println("[ERROR] " + e.getMessage());
             e.printStackTrace(System.err);
+        }
+    }
+
+    public long countAll(Member m) {
+        try {
+            long count = (long) em.createNamedQuery("Notification.countAll")
+                    .setParameter("notifyMember", m)
+                    .getSingleResult();
+            return count;
+        } catch (Exception e) {
+            System.err.println("[ERROR] " + e.getMessage());
+            return -1;
         }
     }
 }

@@ -4,10 +4,14 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 template="/WEB-INF/templates/gudeg7ui.xhtml">
+    <ui:define name="nav">
+        <li><a href="/gudeg7-web/home.jsf">Home</a></li>
+        <li class="active"><a href="/gudeg7-web/about.jsf">About</a></li>
+    </ui:define>
     <ui:define name="content">
         <div class="hero-unit">
             <h1>What's Gudeg7?</h1>
-            <p>Coming soon!.</p>
+            <p>Gudeg7 is a showcase application for JavaEE 7. For further information please visit <a href="http://j.mp/119UjxS">here</a>. </p>
         </div>
     </ui:define>
 </ui:composition>

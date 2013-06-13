@@ -34,9 +34,17 @@ public class NotificationsBean implements Serializable {
     private long unreadCount;
 
     public long getUnreadCount() {
-        this.unreadCount = notificationsEJB.count(session.getActiveMembers());
+        this.unreadCount = notificationsEJB.countUnread(session.getActiveMembers());
         return unreadCount;
     }
+    
+    private long allNotifications;
+
+    public long getAllNotifications() {
+        this.unreadCount = notificationsEJB.countAll(session.getActiveMembers());
+        return unreadCount;
+    }
+    
     private String unreadNotificationsText;
 
     public String getUnreadNotificationsText() {
@@ -107,5 +115,6 @@ public class NotificationsBean implements Serializable {
         }
         return notifToolbar;
     }
+    
     
 }

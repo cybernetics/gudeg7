@@ -11,7 +11,7 @@
                 <f:facet name="caption">
                     <h2>Your notifications</h2>
                 </f:facet>
-                <h:column >
+                <h:column>
                     <f:facet name="header">
                         Title
                     </f:facet>
@@ -20,7 +20,7 @@
                     <!-- For have-read notifications, set font-weight to normal -->
                     <h:outputText rendered="#{not notify.unread}" value="#{notify.title}"/>
                 </h:column>
-                <h:column >
+                <h:column>
                     <f:facet name="header">
                         Description
                     </f:facet>
@@ -60,13 +60,13 @@
                         </div>
                     </div>
                 </h:column>
-                <f:facet name="footer">
+                <f:facet name="footer" rendered="#{notifications.allNotifications gt 0}">
                     <h:form>
                         <h:panelGrid columns="2">
                             <h:commandButton styleClass="btn btn-danger" action="#{notifications.deleteAllNotifications}" 
-                                             value="Delete all" rendered="#{notifications.unreadCount ge 0}"/>
+                                             value="Delete all"/>
                             <h:commandButton styleClass="btn btn-primary" action="#{notifications.markAllAsRead}" 
-                                             value="Mark all as read" rendered="#{notifications.unreadCount ge 0}"/>
+                                             value="Mark all as read" rendered="#{notifications.unreadCount gt 0}"/>
                         </h:panelGrid>
                     </h:form>
                 </f:facet>

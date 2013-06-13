@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Notification.findById", query = "SELECT n FROM Notification n WHERE n.id = :notifyId"),
     @NamedQuery(name = "Notification.findByMember", query = "SELECT n FROM Notification n WHERE n.member = :notifyMember"),
     @NamedQuery(name = "Notification.countUnread", query = "SELECT COUNT(n.id) FROM Notification n WHERE n.unread = TRUE AND n.member = :notifyMember"),
+    @NamedQuery(name = "Notification.countAll", query = "SELECT COUNT(n.id) FROM Notification n WHERE n.member = :notifyMember"),
     @NamedQuery(name="Notification.markRead", query = "UPDATE Notification n SET n.unread = FALSE WHERE n.id = :notifyId AND n.member = :notifyMember"),
     @NamedQuery(name="Notification.markReadAll", query = "UPDATE Notification n SET n.unread = FALSE WHERE n.member = :notifyMember"),
     @NamedQuery(name="Notification.deleteAll", query = "DELETE FROM Notification n WHERE n.member = :notifyMember")
