@@ -7,11 +7,13 @@ package com.jug.joglosemar.ejb;
 import com.jug.joglosemar.model.Member;
 import com.jug.joglosemar.model.Notification;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -32,6 +34,43 @@ public class NotificationsEJB {
         } catch (Exception e) {
             System.err.println("[ERROR] " + e.getMessage());
             e.printStackTrace(System.err);
+        }
+    }
+    
+    @EJB
+    private MemberEJB memberEJB;
+    
+    public void addAll(String title, String description) {
+        Collection<Member> allMembers = memberEJB.findAll();
+        this.addMany(title, description, allMembers);
+    }
+    
+    public void addMany(String title, String description, Collection<Member> destination) {
+        List<Notification> list = new ArrayList<>();
+        if(destination != null && !destination.isEmpty()) {
+            for(Member m : destination) {
+                Notification n = new Notification();
+                n.setTitle(title);
+                n.setDescription(description);
+                n.setMember(m); 
+                list.add(n);
+            }
+            
+            //TRANSACTION
+            //Make sure that all notification is persisted, or not at all
+            EntityTransaction et = em.getTransaction();
+            et.begin();
+            try {
+                for(Notification n : list) {
+                    em.persist(n);
+                }
+                et.commit();
+            } catch (Exception e) {
+                System.err.println("[ERROR] " + e.getMessage());
+                et.rollback();
+            }
+        } else {
+            // DO NOTHING
         }
     }
     

@@ -15,5 +15,6 @@ Any value defined here will override the pom.xml file value but is only applicab
 -->
         <org-netbeans-modules-whitelist.whitelist-oracle>false</org-netbeans-modules-whitelist.whitelist-oracle>
         <netbeans.deploy.on.save>false</netbeans.deploy.on.save>
+        <netbeans.hint.j2eeVersion>1.7</netbeans.hint.j2eeVersion>
     </properties>
 </project-shared-configuration>

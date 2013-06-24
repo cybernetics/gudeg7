@@ -64,7 +64,7 @@
                     <h:form>
                         <h:panelGrid columns="2">
                             <h:commandButton styleClass="btn btn-danger" action="#{notifications.deleteAllNotifications}" 
-                                             value="Delete all"/>
+                                             value="Delete all" rendered="#{notifications.allNotifications gt 0}"/>
                             <h:commandButton styleClass="btn btn-primary" action="#{notifications.markAllAsRead}" 
                                              value="Mark all as read" rendered="#{notifications.unreadCount gt 0}"/>
                         </h:panelGrid>

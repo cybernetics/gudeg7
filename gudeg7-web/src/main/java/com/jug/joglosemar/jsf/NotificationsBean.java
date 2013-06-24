@@ -41,8 +41,8 @@ public class NotificationsBean implements Serializable {
     private long allNotifications;
 
     public long getAllNotifications() {
-        this.unreadCount = notificationsEJB.countAll(session.getActiveMembers());
-        return unreadCount;
+        this.allNotifications = notificationsEJB.countAll(session.getActiveMembers());
+        return allNotifications;
     }
     
     private String unreadNotificationsText;

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/gudeg7ui.xhtml">
+    <ui:define name="nav">
+        <li><a href="/gudeg7-web/home.jsf">Home</a></li>
+        <li><a href="/gudeg7-web/about.jsf">About</a></li>
+        <li class="active"><a href="/gudeg7-web/backend.jsf">Backend</a></li>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <h:inputText id="title" value="#{newnotify.title}" required="true">
+                <f:passThroughAttribute name="placeholder" value="Title"/>
+                <f:validateLength minimum="4" maximum="45"/>
+            </h:inputText>
+            <h:messages for="title" />
+            <br/>
+            <h:inputText id="description" value="#{newnotify.description}" required="true">
+                <f:passThroughAttribute name="placeholder" value="Title"/>
+                <f:validateLength minimum="4" maximum="45"/>
+            </h:inputText>
+            <h:messages for="description" />
+            <br/>
+            <h:selectOneRadio id="destinationToAll" value="#{newnotify.toAll}"
+                              valueChangeListener="#{newnotify.toAllValueChange}">
+                <f:selectItem itemValue="true" itemLabel="All" />
+                <f:selectItem itemValue="false" itemLabel="Select manually" />
+                <f:ajax execute="@this dattable" />
+            </h:selectOneRadio>
+            <br/>
+            <h:dataTable id="dattable" var="member" value="#{newnotify.memberList}" rendered="#{newnotify.toAll eq false}">
+                <h:column>#{member.firstName} #{member.lastName}</h:column>
+                <h:column>#{member.email}</h:column>
+            </h:dataTable>
+            <br/><br/>
+            <h:commandButton type="submit" styleClass="btn btn-info" value="Next" action="addFlowProc"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

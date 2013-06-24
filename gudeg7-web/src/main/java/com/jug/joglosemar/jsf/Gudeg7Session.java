@@ -43,17 +43,24 @@ public class Gudeg7Session implements Serializable {
         //Check signinUsername and signinPassword
         String uname = this.signinUsername;
         String pword = this.signinPassword;
+
+        FacesMessage message = null;
+
         Member m = memberEJB.findByEmail(uname);
         if (m != null) {
             if (m.getPassword().equals(pword)) {
                 //Set ActiveMembers
                 this.activeMembers = m;
                 return "home?faces-redirect=true";
+            } else {
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Login failed!", "Username and Password combination is wrong!");
             }
+        } else {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                        "Login failed!", "User with that email doesn't exist!");
         }
         this.activeMembers = null;
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                "Login failed!", "Username and Password combination is wrong!");
         FacesContext.getCurrentInstance().addMessage(null, message);
         return "signin";
     }

@@ -23,4 +23,11 @@
         </view>
         <start-node>regFlow</start-node>
     </flow-definition>
+    
+    <flow-definition id="addnotify">
+        <view id="addnotifyView">
+            <vdl-document>/backend/notifications/add/addFlow.xhtml</vdl-document>
+        </view>
+        <start-node>addnotifyView</start-node>
+    </flow-definition>
 </faces-config>

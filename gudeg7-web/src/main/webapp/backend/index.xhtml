@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/gudeg7ui.xhtml">
+    <ui:define name="nav">
+        <li><a href="/gudeg7-web/home.jsf">Home</a></li>
+        <li><a href="/gudeg7-web/about.jsf">About</a></li>
+        <li class="active"><a href="/gudeg7-web/backend/index.jsf">Backend</a></li>
+    </ui:define>
+    <ui:define name="content">
+        <div class="hero-unit">
+            <h1>Gudeg7 Backend Administration</h1>
+            <br/>
+            <h:form prependId="false">
+                <h:panelGrid columns="1">
+                    <h:commandButton styleClass="btn btn-info" value="Add notifications" action="addnotify"/>
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

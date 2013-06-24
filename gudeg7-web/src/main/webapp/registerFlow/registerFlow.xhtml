@@ -18,8 +18,11 @@
             <h:inputText id="email" value="#{registerBean.email}" required="true" >
                 <f:passThroughAttribute name="placeholder" value="Email"/>
                 <f:validateRegex pattern="^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$" />
-                
             </h:inputText>
+            <h:panelGrid columns="2">
+                <button type="button" class="btn btn-warning" onclick="sendSomething()">Check availability</button>
+                <p id="resultemail"></p>
+            </h:panelGrid>
             <h:messages for="email" />
             <br/>
             <h:inputSecret id="password" value="#{registerBean.password}" required="true" >
@@ -58,6 +61,27 @@
             <br/><br/>
             <h:commandButton type="submit" styleClass="btn btn-info" value="Next" action="registerFlowProc"/>
         </h:form>
+        <script>
+                    var ws = new WebSocket("ws://localhost:8080/gudeg7-web/register/email");
+                    var result;
+                    
+                    ws.onopen = function(evt) {
+                        onOpen(evt)
+                    };
+                    ws.onmessage = function(evt) {
+                        onMessage(evt);
+                    };
+                    
+                    function onMessage(evt) {
+                        $('#resultemail').html(evt.data);
+                    }
+                    
+                    function sendSomething() {
+                        $('#resultemail').html('Please wait...');
+                        var email = $('#email').val();
+                        ws.send(email);
+                    }
+        </script>
     </ui:define>
 </ui:composition>
 
