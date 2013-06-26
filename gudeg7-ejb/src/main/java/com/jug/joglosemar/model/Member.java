@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -79,6 +80,9 @@ public class Member implements Serializable {
     @NotNull
     @Size(max = 50)
     private String province;
+    
+    @Transient
+    private boolean selected;
 
     public Long getId() {
         return id;
@@ -142,5 +146,13 @@ public class Member implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

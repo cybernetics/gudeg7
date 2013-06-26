@@ -45,7 +45,6 @@ public class Notification implements Serializable {
     
     @Column(nullable = false)
     @NotNull
-    @Size(min = 4, max = 45)
     private String title;
     
     @Column(nullable = false)
@@ -56,7 +55,6 @@ public class Notification implements Serializable {
     private Member member;
     
     @Column(nullable = false)
-    @NotNull
     private boolean unread = true; //default is true
     
     @Transient

@@ -7,10 +7,12 @@ package com.jug.joglosemar.jsf;
 import com.jug.joglosemar.ejb.MemberEJB;
 import com.jug.joglosemar.ejb.NotificationsEJB;
 import com.jug.joglosemar.model.Member;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.flow.FlowScoped;
 import javax.inject.Named;
 
@@ -21,7 +23,7 @@ import javax.inject.Named;
 @FlowScoped("addnotify")
 @Named("newnotify")
 public class NewNotificationsBean {
-    
+
     private String title;
     private String description;
     private Collection<Member> destination;
@@ -49,21 +51,38 @@ public class NewNotificationsBean {
     public void setDestination(Collection<Member> destination) {
         this.destination = destination;
     }
-    
     @EJB
     private NotificationsEJB notificationsEJB;
-    
+
     public void add() {
         try {
             System.out.println("[INFO] Starting to add notifications");
-            notificationsEJB.addMany(title, description, destination);
+            if (toAll) {
+                System.out.println("Add to all members");
+                notificationsEJB.addAll(title, description);
+            } else {
+                notificationsEJB.addMany(title, description, getSelectedMember());
+            }
             System.out.println("[INFO] Finishing to add notifications");
+            this.result = "addnotifyFin";
         } catch (Exception e) {
             System.err.println("[ERROR] " + e.getMessage());
+            resultMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "Add notification failed!", e.getMessage());
+            this.result = "addnotifyErr";
         }
     }
-    
-    private boolean toAll;
+    private FacesMessage resultMessage;
+    private String result;
+
+    public String result() {
+        if (resultMessage != null) {
+            FacesContext.getCurrentInstance().addMessage(null, resultMessage);
+        }
+        return result;
+    }
+
+    private boolean toAll = true;
 
     public boolean isToAll() {
         return toAll;
@@ -72,23 +91,37 @@ public class NewNotificationsBean {
     public void setToAll(boolean toAll) {
         this.toAll = toAll;
     }
-    
-    public void toAllValueChange(ValueChangeEvent e) {
-        Boolean toAll_local = (Boolean) e.getNewValue();
-        if(toAll_local) {
-            setToAll(true);
-        } else {
-            setToAll(false);
-        }
-    }
-    
     @EJB
     private MemberEJB memberEJB;
-    
     private List<Member> memberList;
 
     public List<Member> getMemberList() {
-        memberList = memberEJB.findAll();
+        if (memberList == null) {
+            memberList = memberEJB.findAll();
+        }
         return memberList;
+    }
+
+    public String getStatus() {
+        return "OK";
+    }
+
+    public List<Member> getSelectedMember() {
+        List<Member> mList = new ArrayList<>();
+        for (Member m : memberList) {
+            if (m.isSelected()) {
+                mList.add(m);
+            }
+        }
+
+        return mList;
+    }
+    
+    public void reset() {
+        setTitle(null);
+        setDescription(null);
+        setDestination(null);
+        this.result = null;
+        setToAll(true);
     }
 }

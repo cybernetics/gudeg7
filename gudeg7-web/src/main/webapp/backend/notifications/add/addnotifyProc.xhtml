@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/gudeg7ui.xhtml">
+    <ui:define name="nav">
+        <li><a href="/gudeg7-web/home.jsf">Home</a></li>
+        <li><a href="/gudeg7-web/about.jsf">About</a></li>
+        <li class="active"><a href="/gudeg7-web/backend/index.jsf">Backend</a></li>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <h2>Confirmation</h2>
+            <b><h:outputText id="title" value="#{newnotify.title}" /></b>
+            <br/>
+            <h:outputText id="description" value="#{newnotify.description}" />
+            <br/>
+            <br/>
+            <hr/>
+            <h:outputText id="destinationToAll" rendered="#{newnotify.toAll}" value="Will be send to all members"/>
+            <h:dataTable id="dattable" var="member" value="#{newnotify.selectedMember}"
+                         styleClass="table table-hover table-condensed" rendered="#{not newnotify.toAll}">
+                <f:facet name="caption">
+                    Will be send to:
+                </f:facet>
+                <h:column>
+                    <f:facet name="header">
+                        Name
+                    </f:facet>
+                    #{member.firstName} #{member.lastName}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        Email
+                    </f:facet>
+                    #{member.email}
+                </h:column>
+            </h:dataTable>
+            <br/><br/>
+            <h:commandButton type="submit" styleClass="btn btn-info" value="Confirm" actionListener="#{newnotify.add}" action="#{newnotify.result}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

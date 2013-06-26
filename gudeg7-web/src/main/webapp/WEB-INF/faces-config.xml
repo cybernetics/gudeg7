@@ -26,8 +26,23 @@
     
     <flow-definition id="addnotify">
         <view id="addnotifyView">
-            <vdl-document>/backend/notifications/add/addFlow.xhtml</vdl-document>
+            <vdl-document>/backend/notifications/add/addnotify.xhtml</vdl-document>
         </view>
         <start-node>addnotifyView</start-node>
+        <navigation-rule>
+            <from-view-id>*</from-view-id>
+            <navigation-case>
+                <from-outcome>addnotifyProc</from-outcome>
+                <to-view-id>/backend/notifications/add/addnotifyProc.xhtml</to-view-id>
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>addnotifyFin</from-outcome>
+                <to-view-id>/backend/notifications/add/addnotifyFin.xhtml</to-view-id>
+            </navigation-case>
+            <navigation-case>
+                <from-outcome>addnotifyErr</from-outcome>
+                <to-view-id>/backend/notifications/add/addnotifyErr.xhtml</to-view-id>
+            </navigation-case>
+        </navigation-rule>
     </flow-definition>
 </faces-config>

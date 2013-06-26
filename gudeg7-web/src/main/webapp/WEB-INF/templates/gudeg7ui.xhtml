@@ -16,6 +16,8 @@
                 font-family: "Roboto Condensed", sans-serif;
             }
         </style>
+
+        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     </h:head>
 
     <h:body>
@@ -33,6 +35,9 @@
                             <ui:insert name="nav">
                                 <li class="active"><a href="/gudeg7-web/home.jsf">Home</a></li>
                                 <li><a href="/gudeg7-web/about.jsf">About</a></li>
+                                <li>
+                                    <h:outputLink value="/gudeg7-web/backend/index.jsf" rendered="#{gudeg7Session.backendEnabled}">Backend</h:outputLink>
+                                </li>
                             </ui:insert>
                         </ul>
                         <h:form styleClass="navbar-form pull-right" style="float: right" 
@@ -91,8 +96,8 @@
         <h:outputScript name="js/bootstrap.min.js"/>
         <script>
             $("#notifications_popover").popover({
-                html : true,
-                content : '#{notifications.unreadNotificationsText}'
+                html: true,
+                content: '#{notifications.unreadNotificationsText}'
             });
         </script>
     </h:body>

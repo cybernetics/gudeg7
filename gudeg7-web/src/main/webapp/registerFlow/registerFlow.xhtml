@@ -62,7 +62,7 @@
             <h:commandButton type="submit" styleClass="btn btn-info" value="Next" action="registerFlowProc"/>
         </h:form>
         <script>
-                    var ws = new WebSocket("ws://localhost:8080/gudeg7-web/register/email");
+                    var ws = new WebSocket("#{config.registerSocket}");
                     var result;
                     
                     ws.onopen = function(evt) {

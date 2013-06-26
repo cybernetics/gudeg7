@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/gudeg7ui.xhtml">
+    <ui:define name="nav">
+        <li><a href="/gudeg7-web/home.jsf">Home</a></li>
+        <li><a href="/gudeg7-web/about.jsf">About</a></li>
+        <li class="active"><a href="/gudeg7-web/backend/index.jsf">Backend</a></li>
+    </ui:define>
+    <ui:define name="content">
+        <h:panelGroup layout="block" styleClass="alert alert-success" rendered="#{newnotify.status!=null}">
+            <h4>Add Notification Process</h4>
+            Server Status: #{newnotify.status}!<br/>
+        </h:panelGroup>
+        <h:panelGroup layout="block" styleClass="alert alert-error" rendered="#{newnotify.status==null}">
+            <h4>Add Notification Process</h4>
+            Server Status: NOT OK!<br/>
+        </h:panelGroup>
+        <h:form prependId="false">
+            <h:inputText id="title" value="#{newnotify.title}" required="true">
+                <f:passThroughAttribute name="placeholder" value="Title"/>
+                <f:validateLength minimum="1" maximum="45"/>
+            </h:inputText>
+            <h:messages for="title" />
+            <br/>
+            <h:inputText id="description" value="#{newnotify.description}" required="true">
+                <f:passThroughAttribute name="placeholder" value="Description"/>
+                <f:validateLength minimum="4" maximum="200"/>
+            </h:inputText>
+            <h:messages for="description" />
+            <br/>
+            <h:panelGroup id="fortable">
+                <h:selectOneRadio id="destinationToAll" value="#{newnotify.toAll}" layout="pageDirection">
+                    <f:ajax execute="@this" render="fortable"/>
+                    <f:selectItem itemValue="true" itemLabel="All members" />
+                    <f:selectItem itemValue="false" itemLabel="Select manually" />
+                </h:selectOneRadio>
+                <br/>
+                <h:dataTable id="dattable" var="member" value="#{newnotify.memberList}"
+                             styleClass="table table-hover table-condensed" 
+                             rendered="#{(newnotify.memberList!=null) and (not newnotify.toAll)}">
+                    <h:column>
+                        <f:facet name="header">
+                            Name
+                        </f:facet>
+                        #{member.firstName} #{member.lastName}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Email
+                        </f:facet>
+                        #{member.email}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            Selected
+                        </f:facet>
+                        <h:selectBooleanCheckbox id="selectedMember"
+                                                 value="#{member.selected}" />
+                    </h:column>
+                </h:dataTable>
+                <h:outputText value="No members registered" rendered="#{newnotify.memberList==null}"/>
+            </h:panelGroup>
+            <br/><br/>
+            <h:commandButton type="submit" styleClass="btn btn-info" value="Next" action="addnotifyProc"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

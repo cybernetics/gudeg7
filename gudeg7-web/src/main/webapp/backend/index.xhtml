@@ -7,7 +7,9 @@
     <ui:define name="nav">
         <li><a href="/gudeg7-web/home.jsf">Home</a></li>
         <li><a href="/gudeg7-web/about.jsf">About</a></li>
-        <li class="active"><a href="/gudeg7-web/backend/index.jsf">Backend</a></li>
+        <li class="active">
+            <h:outputLink value="/gudeg7-web/backend/index.jsf" rendered="#{gudeg7Session.backendEnabled}">Backend</h:outputLink>
+        </li>
     </ui:define>
     <ui:define name="content">
         <div class="hero-unit">

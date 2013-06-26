@@ -9,12 +9,16 @@ import com.jug.joglosemar.model.Notification;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.EJBContext;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -23,10 +27,10 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class NotificationsEJB {
-    
+
     @PersistenceContext
     private EntityManager em;
-    
+
     public void addNew(Notification notify) {
         try {
             em.persist(notify);
@@ -36,44 +40,34 @@ public class NotificationsEJB {
             e.printStackTrace(System.err);
         }
     }
-    
     @EJB
     private MemberEJB memberEJB;
-    
-    public void addAll(String title, String description) {
+
+    public void addAll(String title, String description) throws Exception {
         Collection<Member> allMembers = memberEJB.findAll();
         this.addMany(title, description, allMembers);
     }
-    
-    public void addMany(String title, String description, Collection<Member> destination) {
-        List<Notification> list = new ArrayList<>();
-        if(destination != null && !destination.isEmpty()) {
-            for(Member m : destination) {
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void addMany(String title, String description, Collection<Member> destination) throws Exception {
+        if (destination != null && !destination.isEmpty()) {
+            for (Member m : destination) {
+                
                 Notification n = new Notification();
                 n.setTitle(title);
+                System.out.println("Title: " + title);
                 n.setDescription(description);
-                n.setMember(m); 
-                list.add(n);
-            }
-            
-            //TRANSACTION
-            //Make sure that all notification is persisted, or not at all
-            EntityTransaction et = em.getTransaction();
-            et.begin();
-            try {
-                for(Notification n : list) {
-                    em.persist(n);
-                }
-                et.commit();
-            } catch (Exception e) {
-                System.err.println("[ERROR] " + e.getMessage());
-                et.rollback();
+                System.out.println("Description: " + description);
+                n.setMember(m);
+                System.out.println("Member: " + m.getEmail());
+                
+                em.persist(n);
             }
         } else {
             // DO NOTHING
         }
     }
-    
+
     public long countUnread(Member m) {
         try {
             long count = (long) em.createNamedQuery("Notification.countUnread")
@@ -101,7 +95,7 @@ public class NotificationsEJB {
             Notification n = em.createNamedQuery("Notification.findById", Notification.class)
                     .setParameter("notifyId", id)
                     .getSingleResult();
-            
+
             em.remove(n);
         } catch (Exception e) {
             System.err.println("[ERROR] " + e.getMessage());
@@ -120,7 +114,7 @@ public class NotificationsEJB {
             e.printStackTrace(System.err);
         }
     }
-    
+
     public void markReadAll(Member m) {
         try {
             em.createNamedQuery("Notification.markReadAll", Notification.class)
