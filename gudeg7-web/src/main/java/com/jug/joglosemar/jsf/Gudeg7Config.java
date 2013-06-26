@@ -4,8 +4,11 @@
  */
 package com.jug.joglosemar.jsf;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -17,5 +20,11 @@ public class Gudeg7Config {
     
     public String getRegisterSocket() {
         return "ws://localhost/gudeg7-web/register/email";
+    }
+    
+    private List<HttpSession> sessions = new ArrayList<>();
+
+    public List<HttpSession> getSessions() {
+        return sessions;
     }
 }

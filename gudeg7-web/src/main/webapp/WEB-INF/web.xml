@@ -8,6 +8,10 @@
         <param-name>javax.faces.CLIENT_WINDOW_MODE</param-name>
         <param-value>url</param-value>
     </context-param>
+    <listener>
+        <description>HttpSessionListener</description>
+        <listener-class>com.jug.joglosemar.servlet.Gudeg7SessionListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>javax.ws.rs.core.Application</servlet-name>
     </servlet>

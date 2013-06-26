@@ -9,13 +9,13 @@ import com.jug.joglosemar.model.Member;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,6 +42,8 @@ public class Gudeg7Session implements Serializable {
     //Sign in method
     @EJB
     private MemberEJB memberEJB;
+    @Inject
+    private Gudeg7Config config;
 
     public String signin() {
         //Check signinUsername and signinPassword
@@ -53,9 +55,19 @@ public class Gudeg7Session implements Serializable {
         Member m = memberEJB.findByEmail(uname);
         if (m != null) {
             if (m.getPassword().equals(pword)) {
+                //Check whether there was user with logged in username:
+                for (HttpSession s : config.getSessions()) {
+                    if (uname.equals(s.getAttribute("username"))) {
+                        message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "Login failed!", "There's user with the same username");
+                        FacesContext.getCurrentInstance().addMessage(null, message);
+                        return "signin";
+                    }
+                }
+
                 //Set ActiveMembers
                 this.activeMembers = m;
-                
+
                 FacesContext ctx = FacesContext.getCurrentInstance();
                 HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
                 try {
@@ -66,7 +78,12 @@ public class Gudeg7Session implements Serializable {
                 } catch (ServletException ex) {
                     System.err.println("[ERROR] " + ex.getMessage());
                 }
-                
+
+                HttpSession sess = (HttpSession) ctx.getExternalContext().getSession(false);
+                sess.setAttribute("username", uname);
+                config.getSessions().add(sess);
+                System.out.println("Adding session to the list");
+
                 return "home?faces-redirect=true";
             } else {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -74,7 +91,7 @@ public class Gudeg7Session implements Serializable {
             }
         } else {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                        "Login failed!", "User with that email doesn't exist!");
+                    "Login failed!", "User with that email doesn't exist!");
         }
         this.activeMembers = null;
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -107,7 +124,7 @@ public class Gudeg7Session implements Serializable {
         this.signinUsername = null;
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
-    
+
     public boolean isBackendEnabled() {
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
