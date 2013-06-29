@@ -9,16 +9,13 @@ import com.jug.joglosemar.model.Notification;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.ejb.EJBContext;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.UserTransaction;
 
 /**
  *
@@ -34,7 +31,6 @@ public class NotificationsEJB {
     public void addNew(Notification notify) {
         try {
             em.persist(notify);
-            System.out.println("[INFO] " + "Notifications has been added!");
         } catch (Exception e) {
             System.err.println("[ERROR] " + e.getMessage());
             e.printStackTrace(System.err);
@@ -55,11 +51,11 @@ public class NotificationsEJB {
                 
                 Notification n = new Notification();
                 n.setTitle(title);
-                System.out.println("Title: " + title);
+                description = description.replace("@firstName", m.getFirstName());
+                description = description.replace("@lastName", m.getLastName());
+                description = description.replace("@name", m.getFirstName() + " " + m.getLastName());
                 n.setDescription(description);
-                System.out.println("Description: " + description);
                 n.setMember(m);
-                System.out.println("Member: " + m.getEmail());
                 
                 em.persist(n);
             }

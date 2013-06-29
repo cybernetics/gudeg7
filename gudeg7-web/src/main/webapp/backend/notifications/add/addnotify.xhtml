@@ -25,11 +25,17 @@
             </h:inputText>
             <h:messages for="title" />
             <br/>
-            <h:inputText id="description" value="#{newnotify.description}" required="true">
+            <h:inputTextarea id="description" value="#{newnotify.description}" required="true" rows="5">
                 <f:passThroughAttribute name="placeholder" value="Description"/>
                 <f:validateLength minimum="4" maximum="200"/>
-            </h:inputText>
+            </h:inputTextarea>
             <h:messages for="description" />
+            <br/>
+            <b>Guide:</b><br/>
+            <p>You can use '@firstName', '@lastName', or '@name' to automatically personalize your notifications to each members. 
+                <br/>
+                <i>Remember!</i>
+                This notifications backend is still in beta phase, so some features like multi-line notifications, won't work. We're working to improvisation.</p>
             <br/>
             <h:panelGroup id="fortable">
                 <h:selectOneRadio id="destinationToAll" value="#{newnotify.toAll}" layout="pageDirection">
